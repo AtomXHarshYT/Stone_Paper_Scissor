@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock-Paper-Sizer</title>
+    <style>
+        * {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+body {
+    background-color: #FEFAE0;
+}
+
+h1 {
+    background-color: #D4A373;
+    color: #FAEDCD;
+    height: 4rem;
+    line-height: 4rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.choices {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.3rem;
+    margin-top: 130px;
+}
+
+.choice {
+    height: 165px;
+    width: 165px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.choice:hover {
+    background-color: #CCD5AE;
+    cursor: pointer;
+    border-radius: 50%;
+    opacity: 80%;
+}
+
+img {
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.scr-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    margin-top: 110px;
+}
+
+.scr {
+    background-color: #D4A373;
+    width: 100px;
+    font-size: 20px;
+    border-radius: 10px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#yrscr {
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#comscr {
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.msgcon {
+    margin-top: 5rem;
+}
+
+#msg {
+    background-color: #CCD5AE;
+    color: #D4A373;
+    font-size: 2rem;
+    display: inline;
+    padding: 1rem;
+    border-radius: 15px;
+}
+
+.res {
+    height: 1rem;
+    margin-top: 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: darkgreen;
+}
+
+button {
+    background-color: #CCD5AE;
+    font-size: 15px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    color: #FAEDCD;
+    margin-top: 8px;
+}
+
+button:hover {
+    background-color: darkcyan;
+    cursor: pointer;
+}
+
+.hide {
+    display: none;
+}
+    </style>
+</head>
+<body>
+    <h1>AtomXHarshYT</h1>
+    <div class="res">
+        <p id="result"></p>
+    </div>
+    <button id="rstBtn">Reset</button>
+    <div class="choices">
+        <div class="choice" id="rock">
+            <img src="https://pixabay.com/vectors/rock-paper-scissors-rock-hand-296854/" alt="Rock Image"/>
+        </div>
+        <div class="choice" id="paper">
+            <img src="https://pixabay.com/vectors/rock-paper-scissors-paper-hand-296855/" alt="Paper Image"/>
+        </div>
+        <div class="choice" id="sizer">
+            <img src="https://pixabay.com/vectors/rock-paper-scissors-scissors-hand-296853/" alt="Sizer Image"/>
+        </div>
+    </div>
+    <div class="scr-board">
+        <div class="scr">
+            <p id="you">You</p>
+            <p id="yrscr">0</p>
+        </div>
+        <div class="scr">
+            <p id="com">Com</p>
+            <p id="comscr">0</p>
+        </div>
+    </div>
+    <div class="msgcon">
+            <p id="msg">Result</p>
+    </div>
+    <script>
+        let usrCnt = 0;
+let comCnt = 0;
+
+const choices = document.querySelectorAll(".choice");
+const msg = document.querySelector("#msg");
+let yrScr = document.querySelector("#yrscr");
+let comScr = document.querySelector("#comscr");
+let result = document.querySelector("#result");
+let resetBtn = document.querySelector("#rstBtn");
+
+
+
+
+const playGame = (userChoice) => {
+    const comChoice = gencomChoice();
+    console.log("User Choice is", userChoice);
+    console.log("Computer Choice is", comChoice);
+    
+    if (userChoice === comChoice) {
+        drwGame(comChoice);
+    } else {
+        let usrWin = true;
+        if (userChoice === "rock") {
+            usrWin = comChoice === "paper" ? false : true;
+        } else if (userChoice === "paper") {
+            usrWin = comChoice === "sizer" ? false : true;
+        } else {
+            usrWin = comChoice === "rock" ? false : true;
+        }
+        showWin(usrWin, userChoice, comChoice);
+    }
+};
+
+const showWin = (usrWin, userChoice, comChoice) => {
+    if (usrWin) {
+        msg.innerText = "Noob Win!!!";
+        msg.style.backgroundColor = "green";
+        usrCnt++;
+        yrScr.innerText = usrCnt;
+        result.innerText = `You Accidently Choose ${userChoice}, Opponent on  ${comChoice}!!`;
+        result.classList.remove("hide");
+    }
+    else {
+        msg.innerText = "You Lose Noob! hahaha";
+        msg.style.backgroundColor = "red";
+        comCnt++;
+        comScr.innerText= comCnt;
+        result.classList.remove("hide");
+        result.innerText = `Opponent Choice ${comChoice}, Bad Luck Like Your Future!!`;
+    }
+}
+
+const drwGame = (comChoice) => {
+    msg.innerText = "Game Draw Noob! Try Again";
+    msg.style.backgroundColor = "#CCD5AE";
+    result.innerText = `Both are Noob Opponent on  ${comChoice}!!`;
+};
+
+const gencomChoice = () => {
+    const options = ["rock", "paper", "sizer"];
+    const rndnum = Math.floor(Math.random() * 3);
+    return options[rndnum];
+};
+
+choices.forEach((choice) => {
+    choice.addEventListener("click", () => {
+        const userChoice = choice.getAttribute("id");
+        playGame(userChoice);
+    });
+});
+
+const resetGame = () => {
+    yrScr.innerText = 0;
+    comScr.innerText= 0;
+    result.classList.add("hide");
+}
+
+resetBtn.addEventListener( "click", resetGame) ;
+    </script>
+</body>
+</html>
